@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+import sys
+if len(sys.argv) == 2 and sys.argv[1] == "autoconf":
+        print "yes"
+elif len(sys.argv) == 2 and sys.argv[1] == "config":
+        print 'graph_title IPVS Connections per Second'
+        print 'graph_vlabel cps'
+        print 'graph_category ipvs'
+        print 'conns.label Connections'
+        print 'conns.type DERIVE'
+        print 'graph_args --base 1000'
+else:
+        readfile = open('/proc/net/ip_vs_stats', 'r')
+        i = 0
+        for line in readfile:
+                i = i + 1
+                if i == 3:
+                        conns, packetsin, packetsout, bytesin, bytesout = line.split()
+                        print("conns.value " + str(int(conns, 16)))
+
